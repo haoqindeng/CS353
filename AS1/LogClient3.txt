@@ -1,0 +1,8 @@
+connecting to the server localhost at port 9001
+sending register message Ron
+received welcome
+sendto John hello
+recvfrom John hello2
+sendto Mary hello3
+recvfrom Mary hello5
+terminating client

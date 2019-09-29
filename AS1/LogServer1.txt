@@ -1,0 +1,16 @@
+server started on 127.0.0.1 at port 7584...
+server overlay started at port 2500
+server joined overlay from host 127.0.0.1 port 55938
+client connection from host 127.0.0.1 port 51489
+received register John from host 127.0.0.1 port 51489
+sendto John from Ron hello
+recvfrom Ron to John hello
+sendto Ron from John hello2
+Ron not registered with server
+sending message to overlay hello2
+sendto John from Mary hello4
+recvfrom Mary to John hello4
+sendto Ron from Mary 
+Ron not registered with server
+recvfrom Mary to Ron 
+terminating server...

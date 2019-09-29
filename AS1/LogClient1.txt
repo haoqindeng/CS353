@@ -1,0 +1,7 @@
+connecting to the server localhost at port 7584
+sending register message John
+received welcome
+recvfrom Ron hello
+sendto Ron hello2
+recvfrom Mary hello4
+terminating client
