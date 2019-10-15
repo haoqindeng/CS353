@@ -16,7 +16,6 @@ class ClientThread(Thread):
         while True:
             data, addr = s.recvfrom(1024)
             print ("received data: " + data.decode())
-            print('waiting for messages...')
             # f.write(data.decode() + '\n')
             message = data.decode().split(' ')
             msg_type = message[0]
@@ -24,14 +23,13 @@ class ClientThread(Thread):
                 self.f.writelines('received welcome\n')
             elif msg_type == 'exit':
                 print(self.client_name + ' exit')
-                self.f.writelines('terminating client\n')
+                self.f.writelines('terminating client...\n')
                 break
             else:
                 self.f.writelines(data.decode() + '\n')
             # self.socket.sendto(reply, addr)
 
 # main program
-print(argv)
 file_name = argv[6]
 # print(file_name)
 client_name = argv[8]
@@ -42,10 +40,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host = argv[2]
 # port = int(argv[4])
 port = int(argv[4])
-print(str(port))
 
 addr = (host, port)
-print(addr)
 # s.sendto(data, (host, port))
 
 
@@ -59,10 +55,9 @@ listen_thread = ClientThread(addr, s, f, client_name)
 listen_thread.start()
 
 while True:
-    input_value = input('plelase enter: ')
+    input_value = input()
     msg_type = input_value.split(' ')
     if input_value == 'exit':
-        print('must terminate')
         s.sendto(str(input_value).encode(), addr)
         listen_thread.join()
         break

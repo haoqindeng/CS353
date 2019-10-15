@@ -13,7 +13,6 @@ class SubTcpThreadSendTo(Thread):
     def run(self): 
         while True : 
             if self.data != '':
-                print('line 16')
                 self.conn.sendall(self.data.encode())
                 self.data = ''
 
@@ -35,9 +34,7 @@ class SubTcpThread(Thread):
             print(data.decode())
             msg = data.decode().split(' ')
             if msg[0] == 'sendto':
-                print('to send, we need to change main thread vars')
                 g_var = g_var + 1
-                print(g_var)
                 # send through udp
                 # recvfrom_name = ''
                 # for th in client_thread_pool:
@@ -64,7 +61,6 @@ class SubTcpThread(Thread):
                     f.write('recvfrom ' + recvfrom_name + ' to ' + sendto_name + ' ' + content + '\n')
 
                 else:
-                    print(server_thread_pool)
                     for th in server_thread_pool:
                         if th.addr != self.addr:
                             th.data = data.decode()
@@ -127,14 +123,13 @@ class ClientThread(Thread):
             if self.data != '':
                 self.socket.sendto(self.data.encode(), self.addr)
                 print('sendto ' + self.name + ' ' + self.data)
-                print(self.addr)
+              
                 self.data = ''
 
 
 
 cmd_dict = {}
 
-print(argv)
 it = 1
 while it < len(argv):
     cmd_dict[argv[it]] = argv[it + 1]
@@ -164,11 +159,11 @@ if '-s' in cmd_dict:
 if '-t' in cmd_dict:
     serveroverlayport = int(cmd_dict['-t'])
 
-print(host)
-print(port)
-print(overlayport)
-print(serveroverlayIP)
-print(serveroverlayport)
+# print(host)
+# print(port)
+# print(overlayport)
+# print(serveroverlayIP)
+# print(serveroverlayport)
 
 data2 = 'hello_back'.encode()
 
@@ -177,7 +172,6 @@ tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 if overlayport != -1:
 
     addr = (host, overlayport)
-    print(addr)
     tcp_socket.bind(addr)
     new_thread = TcpThread(tcp_socket, addr)
     new_thread.daemon = True
@@ -187,10 +181,8 @@ if overlayport != -1:
 # reach_out = False
 tcp_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 if serveroverlayIP != -1 and serveroverlayport != -1:
-    print('connect to other server')
     # reach_out = True
     addr = (host, serveroverlayport)
-    print(addr)
     tcp_socket2.connect(addr)
     # lllllllll;l
     # t = 'hello'
@@ -216,8 +208,6 @@ try:
     while True:
         data, addr = s.recvfrom(1024)
         msg = data.decode().split()
-        print(msg)
-        print(addr)
         if msg[0] == 'register':
             client_name = msg[1]
             if client_name not in name_thread_dict:
@@ -243,7 +233,6 @@ try:
             # client_thread_pool.remove(name_thread_dict[recvfrom_name])
             # del name_thread_dict[client_name]
         elif msg[0] == 'sendto':
-            print('inst: sento')
             recvfrom_name = ''
             for th in client_thread_pool:
                 if th.addr == addr:
@@ -251,7 +240,6 @@ try:
                     break
             sendto_name = msg[1]
             # locally found receiver
-            print('right at 207')
 
             content = ''
             it = 2
@@ -260,7 +248,6 @@ try:
                 it += 1
             content = content[:-1]
             if sendto_name in name_thread_dict:
-                print('is in')
                 sendto_thread = name_thread_dict[sendto_name]
 
                 
@@ -271,7 +258,6 @@ try:
             else:
                 # forward to other server
                 # if reach_out == True:
-                print(server_thread_pool)
                 for th in server_thread_pool:
                     th.data = data.decode() + ' ' + recvfrom_name
                     print('send to another server...')

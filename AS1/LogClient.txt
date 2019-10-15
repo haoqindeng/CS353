@@ -1,4 +1,0 @@
-connecting to the server localhost at port 7584
-sending register message John
-received welcome
-terminating client
