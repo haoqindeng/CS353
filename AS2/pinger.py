@@ -81,7 +81,7 @@ payload = ""
 count = 10
 destination = ""
 logfile = ""
-print(cmd_dict)
+# print(cmd_dict)
 if '-p' in cmd_dict:
     payload = cmd_dict['-p']
 if '-c' in cmd_dict:
@@ -102,7 +102,7 @@ try:
 except:
     print('error with opening the socket')
 
-print('Pinging ' + destination + ' with ' + str(len(payload.encode())) + ' bytes of data ' + payload)
+print('Pinging ' + destination + ' with ' + str(len(payload.encode())) + ' bytes of data: ' + payload)
 
 num = 0
 ID = 0
@@ -130,7 +130,7 @@ while num < count:
     start_select = time.clock()
     what_ready = select.select([socket], [], [], 3)
     if what_ready[0] == []:
-        print('failed to transimit on timeout')
+        print('Request timeout')
         num += 1
         pkt_loss += 1
         continue
@@ -145,9 +145,12 @@ while num < count:
     if ip_type == 0 and packet_ID == ID:
         print('Reply from ' + destination + ':bytes=' + str(len(payload.encode())) + ' time=:' + str(int(1000 * (time_received - time_sent))) + 'ms TTL=' + str(TTL))
     else:
-        print('failed to transimit on timeout')
+        print('Request timeout')
         pkg_loss += 1
 
     num += 1
 print('Ping statistics for ' + destination + ': Packets Sent = ' + str(count) + 
         ', Received = ' + str(count - pkt_loss) + ', Lost = ' + str(int(100 * pkt_loss / count)) + '%')
+
+# some of the code above, including checksum and send&receive icmp payload, are learned from 
+# https://blog.csdn.net/csdn_moming/article/details/51202650 and modified to fix bugs and meet homework requirement
